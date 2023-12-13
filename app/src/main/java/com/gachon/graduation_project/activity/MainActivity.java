@@ -13,8 +13,8 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.gachon.graduation_project.R;
 import com.gachon.graduation_project.util.BasicFunctions;
@@ -25,7 +25,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Objects;
 
 public class MainActivity extends BasicFunctions {
@@ -36,13 +38,13 @@ public class MainActivity extends BasicFunctions {
     private final ArrayList<DatabaseReference> conditionRefList_center_left = new ArrayList<>();
     private final ArrayList<DatabaseReference> conditionRefList_center_right = new ArrayList<>();
     private final ArrayList<DatabaseReference> conditionRefList_right = new ArrayList<>();
-    private Button button_reload;
     private final ArrayList<ImageView> centerLeftSeat = new ArrayList<>();
     private final ArrayList<ImageView> centerRightSeat = new ArrayList<>();
     private final ArrayList<ImageView> leftSeat = new ArrayList<>();
     private final ArrayList<ImageView> rightSeat = new ArrayList<>();
-
+    private TextView textTime;
     private Animation animation;
+    private Button btnReload;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,8 +54,11 @@ public class MainActivity extends BasicFunctions {
         init();
 
         animation = AnimationUtils.loadAnimation(this, R.anim.loading);
-        button_reload = findViewById(R.id.reload);
-        button_reload.setOnClickListener(onClickListener);
+
+        textTime = findViewById(R.id.text_time);
+        btnReload = findViewById(R.id.reload);
+        btnReload.setOnClickListener(onClickListener);
+        animation = AnimationUtils.loadAnimation(this, R.anim.loading);
         Button button_test_use = findViewById(R.id.button_test_use);
         button_test_use.setOnClickListener(onClickListener);
         Button button_test_unuse = findViewById(R.id.button_test_unuse);
@@ -69,7 +74,10 @@ public class MainActivity extends BasicFunctions {
     View.OnClickListener onClickListener = (v) -> {
         switch (v.getId()) {
             case R.id.reload:
-                button_reload.startAnimation(animation);
+                btnReload.startAnimation(animation);
+                recreate();
+                btnReload.clearAnimation();
+                animation.setFillEnabled(false);
                 break;
             case R.id.button_test_use:
                 for(DatabaseReference databaseReference1 : conditionRefList_left){
@@ -85,8 +93,6 @@ public class MainActivity extends BasicFunctions {
                     databaseReference1.setValue("1");
                 }
                 Toast.makeText(this, "success", Toast.LENGTH_SHORT);
-                button_reload.clearAnimation();
-                animation.setFillEnabled(false);
                 break;
             case R.id.button_test_unuse:
                 for(DatabaseReference databaseReference1 : conditionRefList_left){
@@ -102,8 +108,6 @@ public class MainActivity extends BasicFunctions {
                     databaseReference1.setValue("0");
                 }
                 Toast.makeText(this, "success", Toast.LENGTH_SHORT);
-                button_reload.clearAnimation();
-                animation.setFillEnabled(false);
                 break;
         }
     };
@@ -115,6 +119,11 @@ public class MainActivity extends BasicFunctions {
             conditionRef.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    long now = System.currentTimeMillis();
+                    Date date = new Date(now);
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd kk:mm:ss");
+                    String getTime = sdf.format(date);
+                    textTime.setText("마지막 갱신 시간 : " + getTime);
                     if (Objects.equals(snapshot.getValue(String.class), "1")) {
                         seat.get(finalI).setImageResource(R.drawable.rec_use);
                     } else {
@@ -138,20 +147,12 @@ public class MainActivity extends BasicFunctions {
         dialog.show();
 
         Button btnNo = dialog.findViewById(R.id.btn_no);
-        btnNo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.dismiss();
-            }
-        });
+        btnNo.setOnClickListener(view -> dialog.dismiss());
 
         Button btnYes = dialog.findViewById(R.id.btn_yes);
-        btnYes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.dismiss();
-                exit();
-            }
+        btnYes.setOnClickListener(view -> {
+            dialog.dismiss();
+            exit();
         });
 
     }
