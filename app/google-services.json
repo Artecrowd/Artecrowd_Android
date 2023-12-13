@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "992961969703",
+    "firebase_url": "https://graduationproject-93a85-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "graduationproject-93a85",
+    "storage_bucket": "graduationproject-93a85.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:992961969703:android:7591a2bb3b92abca205802",
+        "android_client_info": {
+          "package_name": "com.gachon.graduation_project"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCwry2KgsW8xq6g88r0UBm93w7l9vA0WKg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
