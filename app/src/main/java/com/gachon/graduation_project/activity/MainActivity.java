@@ -45,6 +45,7 @@ public class MainActivity extends BasicFunctions {
     private TextView textTime;
     private Animation animation;
     private Button btnReload;
+    private ImageView btnBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,11 +59,13 @@ public class MainActivity extends BasicFunctions {
         textTime = findViewById(R.id.text_time);
         btnReload = findViewById(R.id.reload);
         btnReload.setOnClickListener(onClickListener);
+        btnBack = findViewById(R.id.btn_back);
+        btnBack.setOnClickListener(onClickListener);
         animation = AnimationUtils.loadAnimation(this, R.anim.loading);
-        Button button_test_use = findViewById(R.id.button_test_use);
-        button_test_use.setOnClickListener(onClickListener);
-        Button button_test_unuse = findViewById(R.id.button_test_unuse);
-        button_test_unuse.setOnClickListener(onClickListener);
+//        Button button_test_use = findViewById(R.id.button_test_use);
+//        button_test_use.setOnClickListener(onClickListener);
+//        Button button_test_unuse = findViewById(R.id.button_test_unuse);
+//        button_test_unuse.setOnClickListener(onClickListener);
 
         checkUse(conditionRefList_left, leftSeat);
         checkUse(conditionRefList_center_left, centerLeftSeat);
@@ -75,40 +78,46 @@ public class MainActivity extends BasicFunctions {
         switch (v.getId()) {
             case R.id.reload:
                 btnReload.startAnimation(animation);
-                recreate();
-                btnReload.clearAnimation();
-                animation.setFillEnabled(false);
+                checkUse(conditionRefList_left, leftSeat);
+                checkUse(conditionRefList_center_left, centerLeftSeat);
+                checkUse(conditionRefList_center_right, centerRightSeat);
+                checkUse(conditionRefList_right, rightSeat);
+//                btnReload.clearAnimation();
+//                animation.setFillEnabled(false);
                 break;
-            case R.id.button_test_use:
-                for(DatabaseReference databaseReference1 : conditionRefList_left){
-                    databaseReference1.setValue("1");
-                }
-                for(DatabaseReference databaseReference1 : conditionRefList_center_left){
-                    databaseReference1.setValue("1");
-                }
-                for(DatabaseReference databaseReference1 : conditionRefList_center_right){
-                    databaseReference1.setValue("1");
-                }
-                for(DatabaseReference databaseReference1 : conditionRefList_right){
-                    databaseReference1.setValue("1");
-                }
-                Toast.makeText(this, "success", Toast.LENGTH_SHORT);
+            case R.id.btn_back:
+                finish();
                 break;
-            case R.id.button_test_unuse:
-                for(DatabaseReference databaseReference1 : conditionRefList_left){
-                    databaseReference1.setValue("0");
-                }
-                for(DatabaseReference databaseReference1 : conditionRefList_center_left){
-                    databaseReference1.setValue("0");
-                }
-                for(DatabaseReference databaseReference1 : conditionRefList_center_right){
-                    databaseReference1.setValue("0");
-                }
-                for(DatabaseReference databaseReference1 : conditionRefList_right){
-                    databaseReference1.setValue("0");
-                }
-                Toast.makeText(this, "success", Toast.LENGTH_SHORT);
-                break;
+//            case R.id.button_test_use:
+//                for(DatabaseReference databaseReference1 : conditionRefList_left){
+//                    databaseReference1.setValue("1");
+//                }
+//                for(DatabaseReference databaseReference1 : conditionRefList_center_left){
+//                    databaseReference1.setValue("1");
+//                }
+//                for(DatabaseReference databaseReference1 : conditionRefList_center_right){
+//                    databaseReference1.setValue("1");
+//                }
+//                for(DatabaseReference databaseReference1 : conditionRefList_right){
+//                    databaseReference1.setValue("1");
+//                }
+//                Toast.makeText(this, "success", Toast.LENGTH_SHORT);
+//                break;
+//            case R.id.button_test_unuse:
+//                for(DatabaseReference databaseReference1 : conditionRefList_left){
+//                    databaseReference1.setValue("0");
+//                }
+//                for(DatabaseReference databaseReference1 : conditionRefList_center_left){
+//                    databaseReference1.setValue("0");
+//                }
+//                for(DatabaseReference databaseReference1 : conditionRefList_center_right){
+//                    databaseReference1.setValue("0");
+//                }
+//                for(DatabaseReference databaseReference1 : conditionRefList_right){
+//                    databaseReference1.setValue("0");
+//                }
+//                Toast.makeText(this, "success", Toast.LENGTH_SHORT);
+//                break;
         }
     };
 
