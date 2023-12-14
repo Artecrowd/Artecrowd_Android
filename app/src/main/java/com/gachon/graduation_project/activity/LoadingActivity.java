@@ -4,10 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.WindowManager;
 
 import com.gachon.graduation_project.R;
-import com.gachon.graduation_project.util.Loading;
 
 public class LoadingActivity extends AppCompatActivity {
 
@@ -16,16 +14,22 @@ public class LoadingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loading);    //theme로 지정했다면 삭제한다.
 
-        Loading loading = new Loading(this);
-        loading.show();
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
+        moveMain(1);
+    }
+
+    private void moveMain(int sec) {
+        new Handler().postDelayed(new Runnable()
+        {
             @Override
-            public void run() {
-                loading.dismiss();
-                startActivity(new Intent(getApplication(), MainActivity.class));                /* 스플래시 액티비티를 스택에서 제거. */
-                LoadingActivity.this.finish();
+            public void run()
+            {
+                //new Intent(현재 context, 이동할 activity)
+                Intent intent = new Intent(getApplicationContext(), ChooseActivity.class);
+
+                startActivity(intent);	//intent 에 명시된 액티비티로 이동
+
+                finish();	//현재 액티비티 종료
             }
-        }, 2000L);
+        }, 2000L * sec); // sec초 정도 딜레이를 준 후 시작
     }
 }

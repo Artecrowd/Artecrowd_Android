@@ -7,6 +7,7 @@ import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.animation.Animation;
@@ -14,16 +15,19 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.gachon.graduation_project.R;
 import com.gachon.graduation_project.util.BasicFunctions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+
+import org.checkerframework.checker.units.qual.A;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -42,10 +46,15 @@ public class MainActivity extends BasicFunctions {
     private final ArrayList<ImageView> centerRightSeat = new ArrayList<>();
     private final ArrayList<ImageView> leftSeat = new ArrayList<>();
     private final ArrayList<ImageView> rightSeat = new ArrayList<>();
+    private final DatabaseReference mDatabase = databaseReference.child("AI-4").child("total");
     private TextView textTime;
     private Animation animation;
-    private Button btnReload;
+    private ImageView btnReload;
     private ImageView btnBack;
+    private ArrayList<ImageView> congestionBar = new ArrayList<>();
+    private TextView textCongestionMain;
+    private long nowSeat = 0, congestion = 0;
+    private final long allSeat = 34;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,11 +66,17 @@ public class MainActivity extends BasicFunctions {
         animation = AnimationUtils.loadAnimation(this, R.anim.loading);
 
         textTime = findViewById(R.id.text_time);
-        btnReload = findViewById(R.id.reload);
+        btnReload = findViewById(R.id.btn_reload);
         btnReload.setOnClickListener(onClickListener);
         btnBack = findViewById(R.id.btn_back);
         btnBack.setOnClickListener(onClickListener);
         animation = AnimationUtils.loadAnimation(this, R.anim.loading);
+        congestionBar.add(findViewById(R.id.image_blue));
+        congestionBar.add(findViewById(R.id.image_green));
+        congestionBar.add(findViewById(R.id.image_yellow));
+        congestionBar.add(findViewById(R.id.image_orange));
+        congestionBar.add(findViewById(R.id.image_red));
+        textCongestionMain = findViewById(R.id.text_congestion_main);
 //        Button button_test_use = findViewById(R.id.button_test_use);
 //        button_test_use.setOnClickListener(onClickListener);
 //        Button button_test_unuse = findViewById(R.id.button_test_unuse);
@@ -71,12 +86,13 @@ public class MainActivity extends BasicFunctions {
         checkUse(conditionRefList_center_left, centerLeftSeat);
         checkUse(conditionRefList_center_right, centerRightSeat);
         checkUse(conditionRefList_right, rightSeat);
+        setTotal();
     }
 
     @SuppressLint("NonConstantResourceId")
     View.OnClickListener onClickListener = (v) -> {
         switch (v.getId()) {
-            case R.id.reload:
+            case R.id.btn_reload:
                 btnReload.startAnimation(animation);
                 checkUse(conditionRefList_left, leftSeat);
                 checkUse(conditionRefList_center_left, centerLeftSeat);
@@ -86,11 +102,23 @@ public class MainActivity extends BasicFunctions {
 //                animation.setFillEnabled(false);
                 break;
             case R.id.btn_back:
+//                for(DatabaseReference databaseReference1 : conditionRefList_left){
+//                    databaseReference1.setValue("1");
+//                }
+//                for(DatabaseReference databaseReference1 : conditionRefList_center_left){
+//                    databaseReference1.setValue("1");
+//                }
+//                for(DatabaseReference databaseReference1 : conditionRefList_center_right){
+//                    databaseReference1.setValue("1");
+//                }
+//                for(DatabaseReference databaseReference1 : conditionRefList_right){
+//                    databaseReference1.setValue("1");
+//                }
                 finish();
                 break;
 //            case R.id.button_test_use:
 //                for(DatabaseReference databaseReference1 : conditionRefList_left){
-//                    databaseReference1.setValue("1");
+//
 //                }
 //                for(DatabaseReference databaseReference1 : conditionRefList_center_left){
 //                    databaseReference1.setValue("1");
@@ -145,26 +173,52 @@ public class MainActivity extends BasicFunctions {
         }
     }
 
-    @SuppressLint("MissingSuperCall")
-    @Override
-    public void onBackPressed() {
-        Dialog dialog;
-        dialog = new Dialog(this);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.setContentView(R.layout.dialog_confirm);
-        dialog.show();
-
-        Button btnNo = dialog.findViewById(R.id.btn_no);
-        btnNo.setOnClickListener(view -> dialog.dismiss());
-
-        Button btnYes = dialog.findViewById(R.id.btn_yes);
-        btnYes.setOnClickListener(view -> {
-            dialog.dismiss();
-            exit();
+    public void setTotal(){
+        mDatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                nowSeat = snapshot.getValue(Integer.class);
+                congestion = (long) ((double)nowSeat / allSeat * 100);
+                Log.e("test", nowSeat + "");
+                Log.e("test", allSeat + " " + congestion);
+                String color = "";
+                if(congestion >= 0 && congestion < 20){
+                    color = "#5BC0EB";
+                    textCongestionMain.setText("매우 원활");
+                    setCongestion(0);
+                }else if(congestion >= 20 && congestion < 40){
+                    color = "#9BC53D";
+                    textCongestionMain.setText("원활");
+                    setCongestion(1);
+                }else if(congestion >=40 && congestion < 60){
+                    color = "#FDE74C";
+                    textCongestionMain.setText("보통");
+                    setCongestion(2);
+                }else if(congestion >= 60 && congestion < 80){
+                    color = "#FA7921";
+                    textCongestionMain.setText("혼잡");
+                    setCongestion(3);
+                }else{
+                    color = "#E55934";
+                    textCongestionMain.setText("매우 혼잡");
+                    setCongestion(4);
+                }
+                textCongestionMain.setTextColor(Color.parseColor(color));
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {}
         });
-
     }
+
+    private void setCongestion(int color){
+        for(int i=0;i<congestionBar.size();i++){
+            if(i == color)
+                congestionBar.get(i).setVisibility(View.VISIBLE);
+            else
+                congestionBar.get(i).setVisibility(View.GONE);
+        }
+    }
+
 
     public void initDataReference(ArrayList<ImageView> seatList, ArrayList<DatabaseReference> conditionRefList, String name){
         for(int i=0;i<seatList.size();i++){

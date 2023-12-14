@@ -21,9 +21,6 @@ public class Loading {
     }
 
     public void show() {
-        ImageView imageView = dialog.findViewById(R.id.loadingImageView);
-        AnimationDrawable animationDrawable = (AnimationDrawable) imageView.getDrawable();
-        animationDrawable.start();
         dialog.show();
     }
 
