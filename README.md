@@ -44,8 +44,7 @@
 <img src="https://github.com/Artecrowd/Artecrowd_Android/assets/127479677/d1480edc-3a7f-486d-a730-94a79b2ce10a" width="37.5%" height="47.5%" align="center">
 
 <img src="https://github.com/Artecrowd/Artecrowd_Android/assets/127479677/50c2d4d8-c4fb-43f4-9ccb-42223ebb051c" width="35%" height="45%" align="center">
-
-
+<br></br>
 
   + 아르테크네 위치 선택
   + 해당 아르테크네에 대한 자리 도면과 자리 사용 유무 표시
