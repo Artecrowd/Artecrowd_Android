@@ -1,5 +1,7 @@
 package com.gachon.graduation_project.activity;
 
+import static com.gachon.graduation_project.info.LocationInfo.*;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -36,9 +38,14 @@ public class ChooseActivity extends BasicFunctions {
 
         recyclerView = findViewById(R.id.recycler_location);
         locations = new ArrayList<>(Arrays.asList(
-                new LocationInfo("비전타워", new ArrayList<>(Collections.singletonList("비전타워-1층"))),
-                new LocationInfo("가천관", new ArrayList<>(Arrays.asList("라곰"))),
-                new LocationInfo("AI공학관", new ArrayList<>(Arrays.asList("AI공학관-2층", "AI공학관-4층", "AI공학관-5층", "AI공학관-7층"))),
+                new LocationInfo("비전타워", new ArrayList<>(Arrays.asList(new LocationDetail("비전타워-1층", "vision-1")))),
+                new LocationInfo("가천관", new ArrayList<>(Arrays.asList(new LocationDetail("라곰", "gachon")))),
+                new LocationInfo("AI공학관", new ArrayList<>(Arrays.asList(
+                        new LocationDetail("AI공학관-2층", "AI-2"),
+                        new LocationDetail("AI공학관-4층", "AI-4"),
+                        new LocationDetail("AI공학관-5층", "AI-5"),
+                        new LocationDetail("AI공학관-7층", "AI-7")))
+                ),
                 new LocationInfo("공과대학1",  new ArrayList<>(Arrays.asList())),
                 new LocationInfo("공과대학2", new ArrayList<>(Arrays.asList())),
                 new LocationInfo("체육대학", new ArrayList<>(Arrays.asList())),

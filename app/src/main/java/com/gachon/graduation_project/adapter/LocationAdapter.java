@@ -1,5 +1,7 @@
 package com.gachon.graduation_project.adapter;
 
+import static com.gachon.graduation_project.info.LocationInfo.*;
+
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.graphics.Color;
@@ -64,7 +66,7 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Locati
         locationName.setText(name);
         RecyclerView recyclerView = relativeLayout.findViewById(R.id.recycler_choose);
 
-        ArrayList<String> locations = mDataset.get(position).getLocations();
+        ArrayList<LocationDetail> locations = mDataset.get(position).getLocations();
         LinearLayoutManager layoutManager = new LinearLayoutManager(activity);
         ChooseAdapter adapter = new ChooseAdapter(activity, locations);
         recyclerView.setLayoutManager(layoutManager);
@@ -73,6 +75,22 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Locati
         View subImage = relativeLayout.findViewById(R.id.line_2);
         ImageView imageArrow = relativeLayout.findViewById(R.id.image_arrow);
         imageArrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(recyclerView.getVisibility() == View.VISIBLE){
+                    subImage.setVisibility(View.GONE);
+                    recyclerView.setVisibility(View.GONE);
+                    imageArrow.setImageResource(R.drawable.under_arrow);
+                }
+                else{
+                    subImage.setVisibility(View.VISIBLE);
+                    recyclerView.setVisibility(View.VISIBLE);
+                    imageArrow.setImageResource(R.drawable.top_arrow);
+                }
+            }
+        });
+
+        relativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(recyclerView.getVisibility() == View.VISIBLE){

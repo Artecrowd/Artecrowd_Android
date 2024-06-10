@@ -2,7 +2,5 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/Artecrowd" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/Artecrowd_Android" vcs="Git" />
   </component>
 </project>

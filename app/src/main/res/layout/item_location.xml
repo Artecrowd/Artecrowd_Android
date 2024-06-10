@@ -14,7 +14,7 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginTop="15dp"
-            tools:text="비전타워"
+            tools:text="AI공학관-2층"
             android:textSize="20sp"
             android:layout_centerVertical="true"
             android:textColor="@color/white"

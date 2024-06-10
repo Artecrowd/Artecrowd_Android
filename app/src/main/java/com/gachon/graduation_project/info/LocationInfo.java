@@ -4,9 +4,9 @@ import java.util.ArrayList;
 
 public class LocationInfo {
     private String locationName;
-    private ArrayList<String> locations;
+    private ArrayList<LocationDetail> locations;
 
-    public LocationInfo(String locationName, ArrayList<String> locations) {
+    public LocationInfo(String locationName, ArrayList<LocationDetail> locations) {
         this.locationName = locationName;
         this.locations = locations;
     }
@@ -19,11 +19,29 @@ public class LocationInfo {
         this.locationName = locationName;
     }
 
-    public ArrayList<String> getLocations() {
+    public ArrayList<LocationDetail> getLocations() {
         return locations;
     }
 
-    public void setLocations(ArrayList<String> locations) {
+    public void setLocations(ArrayList<LocationDetail> locations) {
         this.locations = locations;
+    }
+
+    public static class LocationDetail {
+        private String location;
+        private String id;
+
+        public LocationDetail(String location, String id) {
+            this.location = location;
+            this.id = id;
+        }
+
+        public String getLocation() {
+            return location;
+        }
+
+        public String getId() {
+            return id;
+        }
     }
 }
