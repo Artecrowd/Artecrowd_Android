@@ -37,9 +37,12 @@
 + 모바일 어플리케이션
   + 사용자에게 혼잡도 정보를 제공하는 클라이언트 앱 (Android 지원)
  
-### Architecture
+### Architecture & Database
 
-![image](https://github.com/Artecrowd/Artecrowd_Android/assets/127479677/563f917f-c6c7-402d-a7ae-73b31b32388c)
+<img src="https://github.com/Artecrowd/Artecrowd_Android/assets/127479677/563f917f-c6c7-402d-a7ae-73b31b32388c" width="70%" height="50%" align="center">
+
+<img src="https://github.com/Artecrowd/Artecrowd_Android/assets/127479677/412844f9-7122-487d-822f-f027f147745b" width="20%" height="10%" align="right">
+
 
 ### Use Example
 
