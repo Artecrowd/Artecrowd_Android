@@ -35,8 +35,12 @@
 + 딥러닝 모델
   + 사람 수를 세기 위한 객체 감지 모델 (예: YOLO, SSD)
 + 모바일 어플리케이션
-  + 사용자에게 혼잡도 정보를 제공하는 클라이언트 앱 (Android 지원) 
+  + 사용자에게 혼잡도 정보를 제공하는 클라이언트 앱 (Android 지원)
  
+### Architecture
+
+![image](https://github.com/Artecrowd/Artecrowd_Android/assets/127479677/563f917f-c6c7-402d-a7ae-73b31b32388c)
+
 ### Use Example
 
 + 어플리케이션 주요 페이지
