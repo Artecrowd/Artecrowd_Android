@@ -16,30 +16,30 @@
         android:theme="@style/Theme.Graduation_Project"
         tools:targetApi="31">
         <activity
+            android:name=".activity.AI2Activity"
+            android:exported="false" />
+        <activity
             android:name=".activity.ThirdActivity"
-            android:exported="false" >
-        </activity>
+            android:exported="false"></activity>
         <activity
             android:name=".activity.ChooseActivity"
-            android:exported="false" >
-        </activity>
+            android:exported="false"></activity>
         <activity
             android:name=".activity.FirstActivity"
-            android:exported="false" >
-        </activity>
+            android:exported="false"></activity>
         <activity
             android:name=".activity.LoadingActivity"
             android:exported="true"
             android:theme="@style/Theme.Graduation_Project">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.MainActivity"
-            android:exported="false" >
-        </activity>
+            android:name=".activity.AI4Activity"
+            android:exported="false"></activity>
     </application>
 
 </manifest>

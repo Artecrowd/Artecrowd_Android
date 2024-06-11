@@ -4,45 +4,36 @@ import static com.gachon.graduation_project.info.LocationInfo.*;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.gachon.graduation_project.R;
-import com.gachon.graduation_project.activity.MainActivity;
-import com.gachon.graduation_project.info.LocationInfo;
+import com.gachon.graduation_project.activity.AI4Activity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.firestore.FirebaseFirestore;
-
-import org.checkerframework.checker.units.qual.A;
 
 import java.util.ArrayList;
 
 public class ChooseAdapter extends RecyclerView.Adapter<ChooseAdapter.ChooseViewHolder> {
     private final FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
     private final DatabaseReference databaseReference = firebaseDatabase.getReference();
-    private DatabaseReference mDatabase;
     private ArrayList<LocationDetail> mDataset = new ArrayList<>();
+    private final Context context;
     private final Activity activity;
 
     public static class ChooseViewHolder extends RecyclerView.ViewHolder{
@@ -59,7 +50,8 @@ public class ChooseAdapter extends RecyclerView.Adapter<ChooseAdapter.ChooseView
     }
 
     public ChooseAdapter(Activity activity, ArrayList<LocationDetail> myDataset){
-        mDataset = myDataset;
+        this.context = activity.getApplicationContext();
+        this.mDataset = myDataset;
         this.activity = activity;
     }
 
@@ -86,8 +78,16 @@ public class ChooseAdapter extends RecyclerView.Adapter<ChooseAdapter.ChooseView
         holder.locationName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(activity, MainActivity.class);
-                activity.startActivity(intent);
+                String activityName = locationId.replace("-", "") + "Activity";
+                String contextName = context.getPackageName();
+                System.out.println(activityName);
+                try {
+                    Class<?> activityClass = Class.forName(contextName + "." + "activity." + activityName);
+                    Intent intent = new Intent(activity, activityClass);
+                    activity.startActivity(intent);
+                } catch (ClassNotFoundException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
     }
@@ -116,6 +116,7 @@ public class ChooseAdapter extends RecyclerView.Adapter<ChooseAdapter.ChooseView
                 if (allSeat != null) {
                     fetchCurrentSeats(holder, locationId, allSeat);
                 } else {
+                    fetchCurrentSeats(holder, locationId, 0L);
                     Log.e("ChooseAdapter", "Failed to fetch total seats");
                 }
             }
@@ -142,6 +143,8 @@ public class ChooseAdapter extends RecyclerView.Adapter<ChooseAdapter.ChooseView
                                 Integer result = task.getResult().getValue(Integer.class);
                                 if (result != null) {
                                     updateViewHolder(holder, result, allSeat);
+                                }else{
+                                    updateViewHolder(holder, 0, allSeat);
                                 }
                             }
                         }
